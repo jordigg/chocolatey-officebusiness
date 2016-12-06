@@ -1,18 +1,12 @@
-﻿$configFile = (Join-Path $(Split-Path -parent $MyInvocation.MyCommand.Definition) 'configuration.xml')
+﻿$architecture = Get-ProcessorBits
+$configFile = (Join-Path $(Split-Path -parent $MyInvocation.MyCommand.Definition) "configuration$architecture.xml")
 $packageName = 'Office365BusinessBasic'
 $installerType = 'EXE'
-$url = 'https://c2rsetup.officeapps.live.com/c2r/download.aspx?productReleaseID=SkypeforBusinessEntryRetail&platform=x86&language=en-us&source=O16O365&version=O16GA'
-$checksum = '07B3291CEAAF3AC3B597183D4778C12572857CA5B3D87DC0A7F26797FE473640'
+$url = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_7213-5776.exe'
+$checksum = '50EC41172C31EA6BDABD35F633A3DC4AC7BB37D7935902EE1A1F3B1641406D68'
 
 $silentArgs = "/extract:$env:temp\office /log:$env:temp\officeInstall.log /quiet /norestart"
 $validExitCodes = @(0)
-
-$architecture = Get-ProcessorBits
-If ($architecture -eq 64) {
-   $url        = "https://c2rsetup.officeapps.live.com/c2r/download.aspx?productReleaseID=SkypeforBusinessEntryRetail&platform=x64&language=en-us&source=O16O365&version=O16GA"
-   $checksum   = 'B8EF77B2DF1C68F209B5C97F85E4B815592D8B9D4813A0BB4E3A73E8C34635BD'
-   $configFile = (Join-Path $(Split-Path -parent $MyInvocation.MyCommand.Definition) 'configuration64.xml')
-}
 
 Write-Host "Extracting to $silentArgs"
 Install-ChocolateyPackage "$packageName" "$installerType" "$silentArgs" "$url" -validExitCodes $validExitCodes -Checksum $checksum -ChecksumType "sha256"
