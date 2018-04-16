@@ -2,13 +2,14 @@
 $packageName                = 'Office365Business'
 $configFile                 = Join-Path $(Split-Path -parent $script) 'configuration.xml'
 $configFile64               = Join-Path $(Split-Path -parent $script) 'configuration64.xml'
-$configurationFile          = if (Get-ProcessorBits -eq 64) { $configFile64 } else { $configFile }
+$bitCheck                   = Get-ProcessorBits
+$configurationFile          = if ($BitCheck -eq 64) { $configFile64 } else { $configFile }
 $officetempfolder           = Join-Path $env:Temp 'chocolatey\Office365Business'
 $packageArgs                = @{
     packageName             = 'Office365DeploymentTool'
     fileType                = 'exe'
-    url                     = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_8008-3601.exe'
-    checksum                = 'A7F8CD73AD61EDDB42303E7D2A0D4F4080B8330267E7B6AD63C17F12926F04DD'
+    url                     = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_9119.3601.exe'
+    checksum                = '1DA31BB6F4BCD487F1DA3BDD1B3E8C0A87877A8EB599FF6DAD39DD2B4D230590'
     checksumType            = 'sha256'
     softwareName            = 'Office365Business*'
     silentArgs              = "/extract:`"$officetempfolder`" /log:`"$officetempfolder\OfficeInstall.log`" /quiet /norestart"

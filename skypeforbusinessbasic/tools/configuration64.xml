@@ -1,11 +1,10 @@
 <Configuration>
   <Add SourcePath="%temp%\office" OfficeClientEdition="64" >
     <Product ID="SkypeforBusinessEntryRetail">
-      <Language ID="en-us" />
+      <Language ID="MatchOS" />
     </Product>
   </Add>
   <Updates Enabled="TRUE" />
   <Display Level="None" AcceptEULA="TRUE" />
   <Logging Path="%temp%" />
-  <Property Name="SharedComputerLicensing" Value="1" />
 </Configuration>

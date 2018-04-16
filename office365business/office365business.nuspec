@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>Office365Business</id>
-        <version>16.0.8008.3601</version>
+        <version>16.0.9119.3601</version>
         <title>Office365Business</title>
         <authors>Microsoft</authors>
         <owners>cadenreiman jordigg</owners>
@@ -13,7 +13,7 @@
         <summary>Office365Business</summary>
         <packageSourceUrl>https://github.com/jordigg/chocolatey-officebusiness/tree/master/office365business</packageSourceUrl>
 		<iconUrl>https://cdn.rawgit.com/jordigg/chocolatey-officebusiness/master/office.png</iconUrl>
-		<releaseNotes>Updated to latest version and installs Office matching OS language</releaseNotes>
+		<releaseNotes>Updated to latest version</releaseNotes>
         <tags>Office365Business Office 365 Bussines admin</tags>
     </metadata>
     <files>
