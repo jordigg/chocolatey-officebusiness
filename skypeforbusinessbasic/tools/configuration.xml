@@ -1,0 +1,10 @@
+<Configuration>
+  <Add SourcePath="%temp%\office" OfficeClientEdition="32" >
+    <Product ID="SkypeforBusinessEntryRetail">
+      <Language ID="MatchOS" />
+    </Product>
+  </Add>
+  <Updates Enabled="TRUE" />
+  <Display Level="None" AcceptEULA="TRUE" />
+  <Logging Path="%temp%" />
+</Configuration>
