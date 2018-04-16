@@ -13,7 +13,8 @@
         <summary>SkypeForBusiness</summary>
         <packageSourceUrl>https://github.com/jordigg/chocolatey-officebusiness/skypeforbusinessbasic</packageSourceUrl>
 		<releaseNotes />
-        <tags>SkypeForBusiness Office 365 Bussines Skype Basic admin</tags>
+        <iconUrl>https://cdn.rawgit.com/jordigg/chocolatey-officebusiness/master/icons/SkypeForBusinessBasic.png</iconUrl>
+        <tags>SkypeForBusinessBasic Office 365 Bussines Skype Basic admin</tags>
     </metadata>
     <files>
         <file src="tools\**" target="tools" />
