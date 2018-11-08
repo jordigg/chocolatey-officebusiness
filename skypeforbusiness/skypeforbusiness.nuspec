@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>SkypeForBusiness</id>
-        <version>16.0.8229.2086</version>
+        <version>11023.33600</version>
         <title>Skype For Business</title>
         <authors>Microsoft</authors>
         <owners>cadenreiman jordigg</owners>

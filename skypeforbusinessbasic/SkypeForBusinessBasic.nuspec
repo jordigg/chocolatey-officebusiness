@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>SkypeForBusinessBasic</id>
-        <version>16.0.8229.2086</version>
+        <version>11023.33600</version>
         <title>Skype for Business Basic</title>
         <authors>Microsoft</authors>
         <owners>jordigg</owners>
@@ -13,8 +13,8 @@
         <summary>SkypeForBusiness</summary>
         <packageSourceUrl>https://github.com/jordigg/chocolatey-officebusiness/skypeforbusinessbasic</packageSourceUrl>
 		<releaseNotes />
-        <iconUrl>https://cdn.rawgit.com/jordigg/chocolatey-officebusiness/master/icons/SkypeForBusinessBasic.png</iconUrl>
         <tags>SkypeForBusinessBasic Office 365 Bussines Skype Basic admin</tags>
+		<iconUrl>https://cdn.rawgit.com/jordigg/chocolatey-officebusiness/master/icons/SkypeForBusinessBasic.png</iconUrl>
     </metadata>
     <files>
         <file src="tools\**" target="tools" />
