@@ -1,10 +1,11 @@
 <Configuration>
-  <Add SourcePath="%temp%\office" OfficeClientEdition="64" >
-    <Product ID="SkypeforBusinessEntryRetail">
-      <Language ID="MatchOS" />
-    </Product>
-  </Add>
-  <Updates Enabled="TRUE" />
-  <Display Level="None" AcceptEULA="TRUE" />
-  <Logging Path="%temp%" />
+	<Add OfficeClientEdition="64" Channel="Monthly" >
+		<Product ID="SkypeforBusinessEntryRetail">
+			<Language ID="MatchOS" />
+		</Product>
+	</Add>
+	<Updates Enabled="TRUE" />
+	<Display Level="None" AcceptEULA="TRUE" />
+	<Logging Path="%temp%" />
+	<RemoveMSI All="True" />
 </Configuration>
