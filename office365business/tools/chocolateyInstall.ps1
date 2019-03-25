@@ -3,8 +3,21 @@ $packageName                = 'Office365Business'
 $configFile                 = Join-Path $(Split-Path -parent $script) 'configuration.xml'
 $configFile64               = Join-Path $(Split-Path -parent $script) 'configuration64.xml'
 $bitCheck                   = Get-ProcessorBits
-$configurationFile          = if ($bitCheck -eq 64) { $configFile64 } else { $configFile }
+$forceX86                   = $env:chocolateyForceX86
+$configurationFile          = if ($BitCheck -eq 32 -Or $forceX86) { $configFile } else { $configFile64 }
 $officetempfolder           = Join-Path $env:Temp 'chocolatey\Office365Business'
+$pp = Get-PackageParameters
+$configPath = $pp["ConfigPath"]
+if ($configPath)
+{
+    Write-Output "Custom config specified: $configPath"
+    $configurationFile = $configPath
+}
+else
+{
+    Write-Output 'No custom configuration specified.'
+}
+
 $packageArgs                = @{
     packageName             = 'Office365DeploymentTool'
     fileType                = 'exe'
