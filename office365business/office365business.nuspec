@@ -2,10 +2,10 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>Office365Business</id>
-        <version>11107.33602</version>
+        <version>11509.33604</version>
         <title>Office 365 Business</title>
         <authors>Microsoft</authors>
-        <owners>cadenreiman jordigg</owners>
+        <owners>cadenreiman jordigg ThisGuy82</owners>
         <licenseUrl>http://windows.microsoft.com/en-us/windows-live/microsoft-services-agreement</licenseUrl>
         <projectUrl>http://office.microsoft.com/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
