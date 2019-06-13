@@ -1,10 +1,9 @@
 ﻿$script                     = $MyInvocation.MyCommand.Definition
 $packageName                = 'Office365Business'
-$configFile                 = Join-Path $(Split-Path -parent $script) 'configuration.xml'
-$configFile64               = Join-Path $(Split-Path -parent $script) 'configuration64.xml'
+$configurationFile          = Join-Path $(Split-Path -parent $script) 'configuration.xml'
 $bitCheck                   = Get-ProcessorBits
 $forceX86                   = $env:chocolateyForceX86
-$configurationFile          = if ($BitCheck -eq 32 -Or $forceX86) { $configFile } else { $configFile64 }
+$arch                       = if ($BitCheck -eq 32 -Or $forceX86) '32' else '64'
 $officetempfolder           = Join-Path $env:Temp 'chocolatey\Office365Business'
 $pp = Get-PackageParameters
 $configPath = $pp["ConfigPath"]
@@ -33,6 +32,57 @@ $packageArgs                = @{
         2147205120  # pending restart required for setup update
     )
 }
+
+ # Assign the CSV and XML Output File Paths
+$XML_Path = $configurationFile
+
+# Create the XML File Tags
+$xmlWriter = New-Object System.XMl.XmlTextWriter($XML_Path,$Null)
+$xmlWriter.Formatting = 'Indented'
+$xmlWriter.Indentation = 1
+$XmlWriter.IndentChar = "`t"
+$xmlWriter.WriteStartDocument()
+$xmlWriter.WriteComment('Office 365 client deployment configuration')
+$xmlWriter.WriteStartElement('Configuration')
+$xmlWriter.WriteEndElement()
+$xmlWriter.WriteEndDocument()
+$xmlWriter.Flush()
+$xmlWriter.Close()
+
+
+# Create the Initial  Node
+$xmlDoc = [System.Xml.XmlDocument](Get-Content $XML_Path);
+$addNode = $xmlDoc.CreateElement("Add")
+$xmlDoc.SelectSingleNode("//Configuration").AppendChild($addNode)
+$addNode.SetAttribute("OfficeClientEdition", "$arch")
+$addNode.SetAttribute("Channel", "Monthly")
+
+
+$productNode = $addNode.AppendChild($xmlDoc.CreateElement("Product"));
+$productNode.SetAttribute("ID", "O365BusinessRetail")
+
+
+$languageNode = $productNode.AppendChild($xmlDoc.CreateElement("Language"));
+$languageNode.SetAttribute("ID", "MatchOS")
+
+$updatesNode = $xmlDoc.CreateElement("Updates")
+$xmlDoc.SelectSingleNode("//Configuration").AppendChild($updatesNode)
+$updatesNode.SetAttribute("Enabled", "TRUE")
+
+$displayNode = $xmlDoc.CreateElement("Display")
+$xmlDoc.SelectSingleNode("//Configuration").AppendChild($displayNode)
+$displayNode.SetAttribute("Level", "None")
+$displayNode.SetAttribute("AcceptEULA", "TRUE")
+
+$loggingNode = $xmlDoc.CreateElement("Logging")
+$xmlDoc.SelectSingleNode("//Configuration").AppendChild($loggingNode)
+$loggingNode.SetAttribute("Path", "%temp%")
+
+$removeMSINode = $xmlDoc.CreateElement("RemoveMSI")
+$xmlDoc.SelectSingleNode("//Configuration").AppendChild($removeMSINode)
+$removeMSINode.SetAttribute("All", "TRUE")
+
+$xmlDoc.Save($XML_Path)
 
 # Download and install the deployment tool
 Install-ChocolateyPackage @packageArgs
