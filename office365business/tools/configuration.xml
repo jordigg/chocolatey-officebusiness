@@ -1,8 +1,9 @@
 <Configuration>
 	<Add OfficeClientEdition="32" Channel="Monthly" >
 		<Product ID="O365BusinessRetail">
-			<Language ID="MatchOS" />
-		</Product>
+    		<Language ID="MatchInstalled" />
+			<Language ID="MatchOS" Fallback="en-us" />
+  		</Product>
 	</Add>
 	<Updates Enabled="TRUE" />
 	<Display Level="None" AcceptEULA="TRUE" />
