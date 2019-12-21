@@ -1,6 +1,6 @@
 <Configuration>
 	<Add OfficeClientEdition="32" Channel="Monthly" >
-		<Product ID="SkypeforBusinessEntryRetail">
+		<Product ID="SkypeforBusiness2019Retail">
 			<Language ID="MatchOS" />
 		</Product>
 	</Add>
