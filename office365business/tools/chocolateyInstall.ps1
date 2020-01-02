@@ -5,6 +5,9 @@ $bitCheck                   = Get-ProcessorBits
 $forceX86                   = $env:chocolateyForceX86
 $arch                       = if ($BitCheck -eq 32 -Or $forceX86 ) {'32'} else {'64'}
 $officetempfolder           = Join-Path $env:Temp 'chocolatey\Office365Business'
+$defaultProductID           = 'O365BusinessRetail'
+$defaultExclude             = @()
+
 $pp = Get-PackageParameters
 $configPath = $pp["ConfigPath"]
 if ($configPath)
@@ -15,6 +18,24 @@ if ($configPath)
 else
 {
     Write-Output 'No custom configuration specified.'
+}
+
+if($pp['productid']) {
+    $paramProductID = $pp['productid']
+    Write-Output "Custom Product ID specified: $paramProductID"
+}
+else {
+    Write-Output "No Product ID specified, using default: $defaultProductID"
+    $paramProductID = $defaultProductID
+}
+
+if($pp['exclude']) {
+    $paramExclude = $pp['exclude'].split(" ")
+    Write-Output "The following apps will not be installed: $paramExclude"
+}
+else {
+    Write-Output "No excluded apps specified, installing all"
+    $paramExclude = $defaultExclude
 }
 
 $packageArgs                = @{
@@ -59,11 +80,16 @@ $addNode.SetAttribute("Channel", "Monthly")
 
 
 $productNode = $addNode.AppendChild($xmlDoc.CreateElement("Product"));
-$productNode.SetAttribute("ID", "O365BusinessRetail")
+$productNode.SetAttribute("ID", $paramProductID)
 
 
 $languageNode = $productNode.AppendChild($xmlDoc.CreateElement("Language"));
 $languageNode.SetAttribute("ID", "MatchOS")
+
+foreach ($ExcludeApp in $paramExclude) {
+  $excludeNode = $productNode.AppendChild($xmlDoc.CreateElement("ExcludeApp"));
+  $excludeNode.SetAttribute("ID", $ExcludeApp)
+}
 
 $updatesNode = $xmlDoc.CreateElement("Updates")
 $xmlDoc.SelectSingleNode("//Configuration").AppendChild($updatesNode)
@@ -93,7 +119,7 @@ $packageArgs['file'] = "$officetempfolder\Setup.exe"
 $packageArgs['silentArgs'] = "/download $configurationFile `"$officetempfolder\setup.exe`""
 Install-ChocolateyInstallPackage @packageArgs
 
-# Run the actual Office setup
+## Run the actual Office setup
 $packageArgs['file'] = "$officetempfolder\Setup.exe"
 $packageArgs['packageName'] = $packageName
 $packageArgs['silentArgs'] = "/configure $configurationFile"
