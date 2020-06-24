@@ -9,12 +9,24 @@
         <licenseUrl>http://windows.microsoft.com/en-us/windows-live/microsoft-services-agreement</licenseUrl>
         <projectUrl>http://office.microsoft.com/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Get the latest versions of your familiar Office programs, such as Word, Excel and PowerPoint, and more, all in one convenient subscription. This will download and silently install the entire Office 365 2016 Business Retail edition. A license is required and you will be prompted to enter your account information upon first launching the software after install.</description>
+	<description>Get the latest versions of your familiar Office programs, such as Word, Excel and PowerPoint, and more, all in one convenient subscription. This will download and silently install the entire Office 365 (Microsoft 365 ofr non-business users) suite. A license is required and you will be prompted to enter your account information upon first launching the software after install. By default, "Office 365 Business Retail" with all applications will be installed, but you can customize the installation using parameters:
+
+* Product ID:    `/productid:[PRODUCT ID]`
+* Excluded Apps: `/excluded:[LIST OF APPS NOT BE INSTALLED]`
+
+Example:
+
+`-params '"/productid:O365HomePremRetail /exclude:""Access Groove Lync OneDrive OneNote Outlook Publisher"""'`
+will select Microsoft 365 Home Premium retail edition and only install Excel, Powerpoint and Word.
+
+For a list of available product IDs see: https://docs.microsoft.com/en-us/office365/troubleshoot/installation/product-ids-supported-office-deployment-click-to-run
+Applications to be excluded can be looked up here: https://github.com/MicrosoftDocs/OfficeDocs-DeployOffice/blob/live/DeployOffice/configuration-options-for-the-office-2016-deployment-tool.md#user-content-id-attribute-part-of-excludeapp-element
+</description>
         <summary>Office 365 Business</summary>
         <packageSourceUrl>https://github.com/jordigg/chocolatey-officebusiness/tree/master/office365business</packageSourceUrl>
 		<iconUrl>https://cdn.rawgit.com/jordigg/chocolatey-officebusiness/master/icons/Office365Business.png</iconUrl>
-		<releaseNotes>Updated to latest version</releaseNotes>
-        <tags>Office365Business Office 365 Bussines admin</tags>
+		<releaseNotes>enable optional installation parameters</releaseNotes>
+        <tags>Office365Business Office 365 Bussines Microsoft365 admin</tags>
     </metadata>
     <files>
         <file src="tools\**" target="tools" />
