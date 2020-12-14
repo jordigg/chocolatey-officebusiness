@@ -6,18 +6,21 @@ $forceX86                   = $env:chocolateyForceX86
 $arch                       = if ($BitCheck -eq 32 -Or $forceX86 ) {'32'} else {'64'}
 $officetempfolder           = Join-Path $env:Temp 'chocolatey\Office365Business'
 $defaultProductID           = 'O365BusinessRetail'
+$defaultLanguageID          = 'MatchOS'
+$defaultUpdates             = 'TRUE'
+$defaulAcceptEULA           = 'TRUE'
 $defaultExclude             = @()
 
 $pp = Get-PackageParameters
-$configPath = $pp["ConfigPath"]
-if ($configPath)
+
+if ($pp['configpath'])
 {
+    $configurationFile = $pp['ConfigPath']
     Write-Output "Custom config specified: $configPath"
-    $configurationFile = $configPath
 }
 else
 {
-    Write-Output 'No custom configuration specified.'
+    Write-Output 'No custom configuration specified. Generating one...'
 }
 
 if($pp['productid']) {
@@ -38,11 +41,38 @@ else {
     $paramExclude = $defaultExclude
 }
 
+if ($pp['language']) {
+    $paramLanguageID = $pp['language']
+    Write-Output "Custom Language ID specified: $paramLanguageID"
+}
+else {
+    Write-Output "No Language ID specified, using default: $defaultLanguageID"
+    $paramLanguageID = $defaultProductID
+}
+
+if ($pp['updates']) {
+    $paramUpdate = $pp['updates']
+    Write-Output "Custom updates value specified: $paramUpdate"
+}
+else {
+    Write-Output "No updates value specified, using default: $defaultUpdates"
+    $paramUpdate = $defaultUpdates
+}
+
+if ($pp['eula']) {
+    $paramEula = $pp['updates']
+    Write-Output "Custom updates value specified: $paramEula"
+}
+else {
+    Write-Output "No updates value specified, using default: $defaulAcceptEULA"
+    $paramEula = $defaulAcceptEULA
+}
+
 $packageArgs                = @{
     packageName             = 'Office365DeploymentTool'
     fileType                = 'exe'
-    url                     = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_13328-20292.exe'
-    checksum                = 'AB1E01C64A6D1D2B2771D94A0F1546B78E202CFD600F07D864EF109C21C490D4'
+    url                     = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_13426-20308.exe'
+    checksum                = 'f3a81c1e320b4f5a9a64f42711c03391c76658545dfcb8d33b042bf2291b8b8a'
     checksumType            = 'sha256'
     softwareName            = 'Office365Business*'
     silentArgs              = "/extract:`"$officetempfolder`" /log:`"$officetempfolder\OfficeInstall.log`" /quiet /norestart"
@@ -76,7 +106,7 @@ $xmlDoc = [System.Xml.XmlDocument](Get-Content $XML_Path);
 $addNode = $xmlDoc.CreateElement("Add")
 $xmlDoc.SelectSingleNode("//Configuration").AppendChild($addNode)
 $addNode.SetAttribute("OfficeClientEdition", "$arch")
-$addNode.SetAttribute("Channel", "Monthly")
+$addNode.SetAttribute("Channel", "Current")
 
 
 $productNode = $addNode.AppendChild($xmlDoc.CreateElement("Product"));
@@ -84,7 +114,7 @@ $productNode.SetAttribute("ID", $paramProductID)
 
 
 $languageNode = $productNode.AppendChild($xmlDoc.CreateElement("Language"));
-$languageNode.SetAttribute("ID", "MatchOS")
+$languageNode.SetAttribute("ID", $paramLanguageID)
 
 foreach ($ExcludeApp in $paramExclude) {
   $excludeNode = $productNode.AppendChild($xmlDoc.CreateElement("ExcludeApp"));
@@ -93,12 +123,12 @@ foreach ($ExcludeApp in $paramExclude) {
 
 $updatesNode = $xmlDoc.CreateElement("Updates")
 $xmlDoc.SelectSingleNode("//Configuration").AppendChild($updatesNode)
-$updatesNode.SetAttribute("Enabled", "TRUE")
+$updatesNode.SetAttribute("Enabled", $paramUpdate)
 
 $displayNode = $xmlDoc.CreateElement("Display")
 $xmlDoc.SelectSingleNode("//Configuration").AppendChild($displayNode)
 $displayNode.SetAttribute("Level", "None")
-$displayNode.SetAttribute("AcceptEULA", "TRUE")
+$displayNode.SetAttribute("AcceptEULA", $paramEula)
 
 $loggingNode = $xmlDoc.CreateElement("Logging")
 $xmlDoc.SelectSingleNode("//Configuration").AppendChild($loggingNode)

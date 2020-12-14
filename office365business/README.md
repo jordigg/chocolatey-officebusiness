@@ -1,2 +1,63 @@
-# chocolatey-Office365Business
-Chocolatey package to install Office 365 Bussiness Retail
+# Chocolatey Packages: Office365Business
+
+## Description
+
+Microsoft 365 (formerly Office 365) is a line of subscription services offered by Microsoft as part of the Microsoft Office product line. The brand encompasses plans that allow use of the Microsoft Office software suite over the life of the subscription, as well as cloud-based software as a service products for business environments, such as hosted Exchange Server, Skype for Business Server, and SharePoint, among others. All Microsoft 365 plans include automatic updates to their respective software at no additional charge, as opposed to conventional licenses for these programs—where new versions require purchase of a new license.
+
+This package installs the [Microsoft 365 Business Retail](https://www.microsoft.com/en-us/microsoft-365/business/microsoft-365-apps-for-business) edition with the language and architecture (32/64 bits) matching the device if not specified oterhwise on the parameters.
+
+## Note
+
+- This installer *will uninstall any other Office packages installed* prior to installing this one to avoid possible errors during isntallation.
+- If you want to force the 32bit version on a 64bit Windows, use the choco `--forcex86` parameter when intalling the package.
+
+## Package installation defaults
+
+By default, **installation** of this package:
+
+- Will uninstall other Microsoft 365 pacakges present on the device.
+- Will install with the matching the language of the operating system.
+- Will install the [Microsoft 365 Business Retail](https://www.microsoft.com/en-us/microsoft-365/business/microsoft-365-apps-for-business) product with all the default apps if not specified otherwise as a parameter.
+- Will set the [release channel](https://docs.microsoft.com/en-gb/deployoffice/overview-update-channels) to `Current`.
+- Will enable auto-updates.
+
+https://docs.microsoft.com/en-gb/deployoffice/office-deployment-tool-configuration-options#channel-attribute-part-of-add-element
+
+## Package Parameters
+
+- `/configpath` - Allows you to specify a [custom XML configuration](https://docs.microsoft.com/en-gb/deployoffice/office-deployment-tool-configuration-options) for the installer which is present on the system.
+- `/productid` - Allows you to change the default product id to install from `O365BusinessRetail` to [something else](https://docs.microsoft.com/en-us/office365/troubleshoot/installation/product-ids-supported-office-deployment-click-to-run#more-information).
+- `/exclude` - Allows you to exclude some applications from the default product id you install.
+- `/language` - Allows you to specify a [language](https://docs.microsoft.com/en-gb/deployoffice/overview-deploying-languages-microsoft-365-apps#languages-culture-codes-and-companion-proofing-languages) different to the default one present on the device.
+- `/updates` - Enables auto-updates.
+- `/eula` - Automatically accepts EULA.
+
+## Installation
+
+installation without parameters with default values.
+
+```ps1
+choco install office365business
+```
+
+installation with parameters. Will select Microsoft 365 Home Premium retail edition in 32bits, only install Excel, Powerpoint and Word in French with updates disabled and EULA not accepted automatically.
+
+```powershell
+ choco install office365business --forcex86 --params="/productid:O365HomePremRetail" /exclude:"Access Groove Lync OneDrive OneNote Outlook Publisher" /language:"fr-FR" /updates:"FALSE" /eula:"FALSE"
+```
+
+## Disclaimer
+
+These Chocolatey Packages only contain installation routines. The software itself is downloaded from the official sources of the software developer. ITIGO AG has no affilation with the software developer.
+
+## Author
+
+- [Jordi Garcia](https://jordigarcia.net)
+
+## License
+
+This project is under the Apache License 2.0 License. See the [LICENSE](LICENSE) file for the full license text.
+
+## Copyright
+
+(c) 2020, Jordi Garcia
