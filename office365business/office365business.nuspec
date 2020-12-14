@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>office365business</id>
-        <version>13426.203084</version>
+        <version>13426.203084.0.20201214</version>
         <title>Office 365 Business</title>
         <authors>Microsoft</authors>
         <owners>cadenreiman jordigg ThisGuy82</owners>
@@ -57,7 +57,7 @@ installation with parameters. Will select Microsoft 365 Home Premium retail edit
 
 ## Disclaimer
 
-These Chocolatey Packages only contain installation routines. The software itself is downloaded from the official sources of the software developer. ITIGO AG has no affilation with the software developer.
+These Chocolatey Packages only contain installation routines. The software itself is downloaded from the official sources of the software developer. The mantainers of this package have no affilation with the software developer.
 
 ## Author
 
