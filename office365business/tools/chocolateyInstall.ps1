@@ -1,6 +1,4 @@
-﻿$script                     = $MyInvocation.MyCommand.Definition
-$packageName                = 'Office365Business'
-#$configurationFile          = Join-Path $(Split-Path -parent $script) 'configuration.xml'
+﻿$packageName                = 'Office365Business'
 $bitCheck                   = Get-ProcessorBits
 $forceX86                   = $env:chocolateyForceX86
 $arch                       = if ($BitCheck -eq 32 -Or $forceX86 ) {'32'} else {'64'}
@@ -87,6 +85,11 @@ $packageArgs                = @{
 
  # Assign the CSV and XML Output File Paths
 $XML_Path = $configurationFile
+
+#create path
+if(-Not(Test-Path $officetempfolder)) {
+    New-Item -ItemType Directory -Force -Path $officetempfolder
+}
 
 # Create the XML File Tags
 $xmlWriter = New-Object System.XMl.XmlTextWriter($XML_Path,$Null)
