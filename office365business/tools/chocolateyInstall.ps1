@@ -1,10 +1,9 @@
-﻿$script                     = $MyInvocation.MyCommand.Definition
-$packageName                = 'Office365Business'
-$configurationFile          = Join-Path $(Split-Path -parent $script) 'configuration.xml'
+﻿$packageName                = 'Office365Business'
 $bitCheck                   = Get-ProcessorBits
 $forceX86                   = $env:chocolateyForceX86
 $arch                       = if ($BitCheck -eq 32 -Or $forceX86 ) {'32'} else {'64'}
-$officetempfolder           = Join-Path $env:Temp 'chocolatey\Office365Business'
+$officetempfolder           = Join-Path $env:Temp 'Office365Business'
+$configurationFile          = Join-Path $officetempfolder 'configuration.xml'
 $defaultProductID           = 'O365BusinessRetail'
 $defaultLanguageID          = 'MatchOS'
 $defaultUpdates             = 'TRUE'
@@ -15,7 +14,7 @@ $pp = Get-PackageParameters
 
 if ($pp['configpath'])
 {
-    $configurationFile = $pp['ConfigPath']
+    $configurationFile = $pp['configpath']
     Write-Output "Custom config specified: $configPath"
 }
 else
@@ -47,7 +46,7 @@ if ($pp['language']) {
 }
 else {
     Write-Output "No Language ID specified, using default: $defaultLanguageID"
-    $paramLanguageID = $defaultProductID
+    $paramLanguageID = $defaultLanguageID
 }
 
 if ($pp['updates']) {
@@ -86,6 +85,11 @@ $packageArgs                = @{
 
  # Assign the CSV and XML Output File Paths
 $XML_Path = $configurationFile
+
+#create path
+if(-Not(Test-Path $officetempfolder)) {
+    New-Item -ItemType Directory -Force -Path $officetempfolder
+}
 
 # Create the XML File Tags
 $xmlWriter = New-Object System.XMl.XmlTextWriter($XML_Path,$Null)
@@ -146,7 +150,7 @@ Install-ChocolateyPackage @packageArgs
 # Use the deployment tool to download the setup files
 $packageArgs['packageName'] = 'Office365BusinessInstaller'
 $packageArgs['file'] = "$officetempfolder\Setup.exe"
-$packageArgs['silentArgs'] = "/download $configurationFile `"$officetempfolder\setup.exe`""
+$packageArgs['silentArgs'] = "/download $configurationFile"
 Install-ChocolateyInstallPackage @packageArgs
 
 # Run the actual Office setup
