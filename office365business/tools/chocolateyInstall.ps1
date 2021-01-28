@@ -20,58 +20,118 @@ if ($pp['configpath'])
 else
 {
     Write-Output 'No custom configuration specified. Generating one...'
-}
 
-if($pp['productid']) {
-    $paramProductID = $pp['productid']
-    Write-Output "Custom Product ID specified: $paramProductID"
-}
-else {
-    Write-Output "No Product ID specified, using default: $defaultProductID"
-    $paramProductID = $defaultProductID
-}
+    if ($pp['productid']) {
+        $paramProductID = $pp['productid']
+        Write-Output "Custom Product ID specified: $paramProductID"
+    }
+    else {
+        Write-Output "No Product ID specified, using default: $defaultProductID"
+        $paramProductID = $defaultProductID
+    }
 
-if($pp['exclude']) {
-    $paramExclude = $pp['exclude'].split(" ")
-    Write-Output "The following apps will not be installed: $paramExclude"
-}
-else {
-    Write-Output "No excluded apps specified, installing all"
-    $paramExclude = $defaultExclude
-}
+    if ($pp['exclude']) {
+        $paramExclude = $pp['exclude'].split(" ")
+        Write-Output "The following apps will not be installed: $paramExclude"
+    }
+    else {
+        Write-Output "No excluded apps specified, installing all"
+        $paramExclude = $defaultExclude
+    }
 
-if ($pp['language']) {
-    $paramLanguageID = $pp['language']
-    Write-Output "Custom Language ID specified: $paramLanguageID"
-}
-else {
-    Write-Output "No Language ID specified, using default: $defaultLanguageID"
-    $paramLanguageID = $defaultLanguageID
-}
+    if ($pp['language']) {
+        $paramLanguageID = $pp['language']
+        Write-Output "Custom Language ID specified: $paramLanguageID"
+    }
+    else {
+        Write-Output "No Language ID specified, using default: $defaultLanguageID"
+        $paramLanguageID = $defaultLanguageID
+    }
 
-if ($pp['updates']) {
-    $paramUpdate = $pp['updates']
-    Write-Output "Custom updates value specified: $paramUpdate"
-}
-else {
-    Write-Output "No updates value specified, using default: $defaultUpdates"
-    $paramUpdate = $defaultUpdates
-}
+    if ($pp['updates']) {
+        $paramUpdate = $pp['updates']
+        Write-Output "Custom updates value specified: $paramUpdate"
+    }
+    else {
+        Write-Output "No updates value specified, using default: $defaultUpdates"
+        $paramUpdate = $defaultUpdates
+    }
 
-if ($pp['eula']) {
-    $paramEula = $pp['updates']
-    Write-Output "Custom updates value specified: $paramEula"
-}
-else {
-    Write-Output "No updates value specified, using default: $defaulAcceptEULA"
-    $paramEula = $defaulAcceptEULA
+    if ($pp['eula']) {
+        $paramEula = $pp['updates']
+        Write-Output "Custom updates value specified: $paramEula"
+    }
+    else {
+        Write-Output "No updates value specified, using default: $defaulAcceptEULA"
+        $paramEula = $defaulAcceptEULA
+    }
+
+    # Assign the CSV and XML Output File Paths
+    $XML_Path = $configurationFile
+
+    #create path
+    if (-Not(Test-Path $officetempfolder)) {
+        New-Item -ItemType Directory -Force -Path $officetempfolder
+    }
+
+    # Create the XML File Tags
+    $xmlWriter = New-Object System.XMl.XmlTextWriter($XML_Path, $Null)
+    $xmlWriter.Formatting = 'Indented'
+    $xmlWriter.Indentation = 1
+    $XmlWriter.IndentChar = "`t"
+    $xmlWriter.WriteStartDocument()
+    $xmlWriter.WriteComment('Office 365 client deployment configuration')
+    $xmlWriter.WriteStartElement('Configuration')
+    $xmlWriter.WriteEndElement()
+    $xmlWriter.WriteEndDocument()
+    $xmlWriter.Flush()
+    $xmlWriter.Close()
+
+    # Create the Initial  Node
+    $xmlDoc = [System.Xml.XmlDocument](Get-Content $XML_Path);
+    $addNode = $xmlDoc.CreateElement("Add")
+    $xmlDoc.SelectSingleNode("//Configuration").AppendChild($addNode)
+    $addNode.SetAttribute("OfficeClientEdition", "$arch")
+    $addNode.SetAttribute("Channel", "Current")
+
+
+    $productNode = $addNode.AppendChild($xmlDoc.CreateElement("Product"));
+    $productNode.SetAttribute("ID", $paramProductID)
+
+
+    $languageNode = $productNode.AppendChild($xmlDoc.CreateElement("Language"));
+    $languageNode.SetAttribute("ID", $paramLanguageID)
+
+    foreach ($ExcludeApp in $paramExclude) {
+        $excludeNode = $productNode.AppendChild($xmlDoc.CreateElement("ExcludeApp"));
+        $excludeNode.SetAttribute("ID", $ExcludeApp)
+    }
+
+    $updatesNode = $xmlDoc.CreateElement("Updates")
+    $xmlDoc.SelectSingleNode("//Configuration").AppendChild($updatesNode)
+    $updatesNode.SetAttribute("Enabled", $paramUpdate)
+
+    $displayNode = $xmlDoc.CreateElement("Display")
+    $xmlDoc.SelectSingleNode("//Configuration").AppendChild($displayNode)
+    $displayNode.SetAttribute("Level", "None")
+    $displayNode.SetAttribute("AcceptEULA", $paramEula)
+
+    $loggingNode = $xmlDoc.CreateElement("Logging")
+    $xmlDoc.SelectSingleNode("//Configuration").AppendChild($loggingNode)
+    $loggingNode.SetAttribute("Path", "%temp%")
+
+    $removeMSINode = $xmlDoc.CreateElement("RemoveMSI")
+    $xmlDoc.SelectSingleNode("//Configuration").AppendChild($removeMSINode)
+    $removeMSINode.SetAttribute("All", "TRUE")
+
+    $xmlDoc.Save($XML_Path)
 }
 
 $packageArgs                = @{
     packageName             = 'Office365DeploymentTool'
     fileType                = 'exe'
-    url                     = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_13426-20308.exe'
-    checksum                = 'f3a81c1e320b4f5a9a64f42711c03391c76658545dfcb8d33b042bf2291b8b8a'
+    url                     = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_13530-20376.exe'
+    checksum                = 'cfd3a939db7e71b999c1f55baed9269e9b344a75a81ac761333cad87359e4b30'
     checksumType            = 'sha256'
     softwareName            = 'Office365Business*'
     silentArgs              = "/extract:`"$officetempfolder`" /log:`"$officetempfolder\OfficeInstall.log`" /quiet /norestart"
@@ -82,67 +142,6 @@ $packageArgs                = @{
         2147205120  # pending restart required for setup update
     )
 }
-
- # Assign the CSV and XML Output File Paths
-$XML_Path = $configurationFile
-
-#create path
-if(-Not(Test-Path $officetempfolder)) {
-    New-Item -ItemType Directory -Force -Path $officetempfolder
-}
-
-# Create the XML File Tags
-$xmlWriter = New-Object System.XMl.XmlTextWriter($XML_Path,$Null)
-$xmlWriter.Formatting = 'Indented'
-$xmlWriter.Indentation = 1
-$XmlWriter.IndentChar = "`t"
-$xmlWriter.WriteStartDocument()
-$xmlWriter.WriteComment('Office 365 client deployment configuration')
-$xmlWriter.WriteStartElement('Configuration')
-$xmlWriter.WriteEndElement()
-$xmlWriter.WriteEndDocument()
-$xmlWriter.Flush()
-$xmlWriter.Close()
-
-
-# Create the Initial  Node
-$xmlDoc = [System.Xml.XmlDocument](Get-Content $XML_Path);
-$addNode = $xmlDoc.CreateElement("Add")
-$xmlDoc.SelectSingleNode("//Configuration").AppendChild($addNode)
-$addNode.SetAttribute("OfficeClientEdition", "$arch")
-$addNode.SetAttribute("Channel", "Current")
-
-
-$productNode = $addNode.AppendChild($xmlDoc.CreateElement("Product"));
-$productNode.SetAttribute("ID", $paramProductID)
-
-
-$languageNode = $productNode.AppendChild($xmlDoc.CreateElement("Language"));
-$languageNode.SetAttribute("ID", $paramLanguageID)
-
-foreach ($ExcludeApp in $paramExclude) {
-  $excludeNode = $productNode.AppendChild($xmlDoc.CreateElement("ExcludeApp"));
-  $excludeNode.SetAttribute("ID", $ExcludeApp)
-}
-
-$updatesNode = $xmlDoc.CreateElement("Updates")
-$xmlDoc.SelectSingleNode("//Configuration").AppendChild($updatesNode)
-$updatesNode.SetAttribute("Enabled", $paramUpdate)
-
-$displayNode = $xmlDoc.CreateElement("Display")
-$xmlDoc.SelectSingleNode("//Configuration").AppendChild($displayNode)
-$displayNode.SetAttribute("Level", "None")
-$displayNode.SetAttribute("AcceptEULA", $paramEula)
-
-$loggingNode = $xmlDoc.CreateElement("Logging")
-$xmlDoc.SelectSingleNode("//Configuration").AppendChild($loggingNode)
-$loggingNode.SetAttribute("Path", "%temp%")
-
-$removeMSINode = $xmlDoc.CreateElement("RemoveMSI")
-$xmlDoc.SelectSingleNode("//Configuration").AppendChild($removeMSINode)
-$removeMSINode.SetAttribute("All", "TRUE")
-
-$xmlDoc.Save($XML_Path)
 
 # Download and install the deployment tool
 Install-ChocolateyPackage @packageArgs
