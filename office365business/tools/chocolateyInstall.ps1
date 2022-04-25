@@ -15,7 +15,7 @@ $pp = Get-PackageParameters
 if ($pp['configpath'])
 {
     $configurationFile = $pp['configpath']
-    Write-Output "Custom config specified: $configPath"
+    Write-Output "Custom config specified: $configurationFile"
 }
 else
 {
