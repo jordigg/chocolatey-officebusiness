@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>office365business</id>
-        <version>15028.20160</version>
+        <version>15330.20230</version>
         <title>Office 365 Business</title>
         <authors>Microsoft</authors>
         <owners>cadenreiman jordigg ThisGuy82</owners>
@@ -50,7 +50,7 @@ choco install office365business
 Installation with parameters. Will select Microsoft 365 Home Premium retail edition in 32bits, only install Excel, Powerpoint and Word in French with updates disabled and EULA not accepted automatically.
 
 ```powershell
- choco install office365business --forcex86 --params="/productid:O365HomePremRetail" /exclude:"Access Groove Lync OneDrive OneNote Outlook Publisher" /language:"fr-FR" /updates:"FALSE" /eula:"FALSE"
+ choco install office365business --forcex86 --params "'/productid:O365HomePremRetail /exclude:Access Groove Lync OneDrive OneNote Outlook Publisher /language:fr-FR /updates:FALSE /eula:FALSE'"
 ```
 
 ## Disclaimer
