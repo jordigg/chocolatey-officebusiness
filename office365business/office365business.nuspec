@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>office365business</id>
-        <version>15928.20216</version>
+        <version>16026.20170</version>
         <title>Office 365 Business</title>
         <authors>Microsoft</authors>
         <owners>cadenreiman jordigg ThisGuy82</owners>
@@ -71,7 +71,7 @@ This project is under the Apache License 2.0 License. See the [LICENSE](LICENSE)
 ]]></description>
         <summary>Office 365 Business</summary>
         <packageSourceUrl>https://github.com/jordigg/chocolatey-officebusiness/tree/master/office365business</packageSourceUrl>
-		<iconUrl>https://cdn.rawgit.com/jordigg/chocolatey-officebusiness/master/icons/Office365Business.png</iconUrl>
+		<iconUrl>https://raw.githubusercontent.com/jordigg/chocolatey-officebusiness/master/icons/Office365Business.png</iconUrl>
 		<releaseNotes>enable optional installation parameters</releaseNotes>
         <tags>Office365Business Office 365 Bussines Microsoft365 admin</tags>
     </metadata>
