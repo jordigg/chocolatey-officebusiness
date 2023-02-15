@@ -7,7 +7,7 @@
         <authors>Microsoft</authors>
         <owners>cadenreiman jordigg ThisGuy82</owners>
         <licenseUrl>http://windows.microsoft.com/en-us/windows-live/microsoft-services-agreement</licenseUrl>
-        <projectUrl>http://office.microsoft.com/</projectUrl>
+        <projectUrl>https://www.microsoft.com/en-us/microsoft-365</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
 	    <description><![CDATA[## Description
 
@@ -71,9 +71,9 @@ This project is under the Apache License 2.0 License. See the [LICENSE](LICENSE)
 ]]></description>
         <summary>Office 365 Business</summary>
         <packageSourceUrl>https://github.com/jordigg/chocolatey-officebusiness/tree/master/office365business</packageSourceUrl>
-		<iconUrl>https://raw.githubusercontent.com/jordigg/chocolatey-officebusiness/master/icons/Office365Business.png</iconUrl>
+		<iconUrl>https://raw.githubusercontent.com/jordigg/chocolatey-officebusiness/master/icons/Windows365.png</iconUrl>
 		<releaseNotes>enable optional installation parameters</releaseNotes>
-        <tags>Office365Business Office 365 Bussines Microsoft365 admin</tags>
+        <tags>Microsoft Office365Business Office 365 Bussines Microsoft365 admin</tags>
     </metadata>
     <files>
         <file src="tools\**" target="tools" />
