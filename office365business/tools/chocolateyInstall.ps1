@@ -130,8 +130,8 @@ else
 $packageArgs                = @{
     packageName             = 'Office365DeploymentTool'
     fileType                = 'exe'
-    url                     = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_16026-20170.exe'
-    checksum                = 'ee53c839f8cec8fd9773a79c4dc4755acdc7e25821e9657133425b2022b81424'
+    url                     = 'https://download.microsoft.com/download/2/7/A/27AF1BE6-DD20-4CB4-B154-EBAB8A7D4A7E/officedeploymenttool_16227-20258.exe'
+    checksum                = 'a39d49e09e0dd81d7fdab8e22a6d28894615b948e9596a211eaaf094a59b4f9b'
     checksumType            = 'sha256'
     softwareName            = 'Office365Business*'
     silentArgs              = "/extract:`"$officetempfolder`" /log:`"$officetempfolder\OfficeInstall.log`" /quiet /norestart"
