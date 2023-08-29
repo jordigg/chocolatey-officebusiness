@@ -7,7 +7,7 @@ $configurationFile          = Join-Path $officetempfolder 'configuration.xml'
 $defaultProductID           = 'O365BusinessRetail'
 $defaultLanguageID          = 'MatchOS'
 $defaultUpdates             = 'TRUE'
-$defaulAcceptEULA           = 'TRUE'
+$defaultAcceptEULA          = 'TRUE'
 $defaultExclude             = @()
 
 $pp = Get-PackageParameters
@@ -58,12 +58,12 @@ else
     }
 
     if ($pp['eula']) {
-        $paramEula = $pp['updates']
-        Write-Output "Custom updates value specified: $paramEula"
+        $paramEula = $pp['eula']
+        Write-Output "Custom eula value specified: $paramEula"
     }
     else {
-        Write-Output "No updates value specified, using default: $defaulAcceptEULA"
-        $paramEula = $defaulAcceptEULA
+        Write-Output "No eula value specified, using default: $defaultAcceptEULA"
+        $paramEula = $defaultAcceptEULA
     }
 
     # Assign the CSV and XML Output File Paths
