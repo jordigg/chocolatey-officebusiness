@@ -149,13 +149,13 @@ Install-ChocolateyPackage @packageArgs
 # Use the deployment tool to download the setup files
 $packageArgs['packageName'] = 'Office365BusinessInstaller'
 $packageArgs['file'] = "$officetempfolder\Setup.exe"
-$packageArgs['silentArgs'] = "/download $configurationFile"
+$packageArgs['silentArgs'] = "/download `"$configurationFile`""
 Install-ChocolateyInstallPackage @packageArgs
 
 # Run the actual Office setup
 $packageArgs['file'] = "$officetempfolder\Setup.exe"
 $packageArgs['packageName'] = $packageName
-$packageArgs['silentArgs'] = "/configure $configurationFile"
+$packageArgs['silentArgs'] = "/configure `"$configurationFile`""
 Install-ChocolateyInstallPackage @packageArgs
 
 if (Test-Path "$officetempfolder") {
