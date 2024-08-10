@@ -1,15 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
-        <id>SkypeForBusiness</id>
-        <version>12130.20272</version>
+        <id>skypeforbusiness</id>
+        <version>17531.20046</version>
         <title>Skype For Business</title>
         <authors>Microsoft</authors>
         <owners>cadenreiman jordigg</owners>
         <licenseUrl>http://windows.microsoft.com/en-us/windows-live/microsoft-services-agreement</licenseUrl>
         <projectUrl>http://office.microsoft.com/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Get the latest versions of Skype For Business. This will download and silently install Skype for Business edition. A license is required and you will be prompted to enter your account information upon first launching the software after install.</description>
+        <description><![CDATA[## Description
+
+Get the latest versions of the standalone Skype For Business. This will download and silently install Skype for Business edition. A license is required and you will be prompted to enter your account information upon first launching the software after install.
+
+This package installs [Skype For Business]https://www.skype.com/business) edition with the language and architecture (32/64 bits) matching the device if not specified otherwise on the parameters.
+
+Please note that Skype For Business is being deprecated in favour of [Microsoft Teams](https://www.microsoft.com/microsoft-teams/group-chat-software)
+]]></description>
         <summary>SkypeForBusiness</summary>
         <packageSourceUrl>https://github.com/jordigg/chocolatey-officebusiness/skypeforbusiness</packageSourceUrl>
 		<releaseNotes />

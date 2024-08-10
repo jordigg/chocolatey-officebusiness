@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>office365business</id>
-        <version>17531.20046</version>
+        <version>17531.20046.2</version>
         <title>Office 365 Business</title>
         <authors>Microsoft</authors>
         <owners>cadenreiman jordigg ThisGuy82</owners>
@@ -72,7 +72,7 @@ This project is under the Apache License 2.0 License. See the [LICENSE](LICENSE)
         <summary>Office 365 Business</summary>
         <packageSourceUrl>https://github.com/jordigg/chocolatey-officebusiness/tree/master/office365business</packageSourceUrl>
 		<iconUrl>https://raw.githubusercontent.com/jordigg/chocolatey-officebusiness/master/icons/Windows365.png</iconUrl>
-		<releaseNotes>enable optional installation parameters</releaseNotes>
+		<releaseNotes>Fix escaping of config file path</releaseNotes>
         <tags>Microsoft Office365Business Office 365 Bussines Microsoft365 admin</tags>
     </metadata>
     <files>
