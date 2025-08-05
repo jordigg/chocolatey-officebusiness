@@ -26,31 +26,33 @@ function global:au_SearchReplace {
 function global:au_GetLatest {
     $releases = 'https://www.microsoft.com/en-us/download/details.aspx?id=49117'
     $headers = @{
-        "User-Agent" = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+        "User-Agent" = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0"
+        "Accept"     = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
     }
 
     try {
-        # Fetch the page content
-        $page = Invoke-WebRequest -Uri $releases -Headers $headers -UseBasicParsing
+        # Fetch the download page
+        $download_page = Invoke-WebRequest -Uri "$releases" -Headers $headers -UseBasicParsing
 
-        # Look for the direct .exe link in the HTML (as you saw)
-        $exeUrl = ($page.RawContent -split '"') | Where-Object { $_ -match '^https://.*\.exe$' } | Select-Object -First 1
+        # Extract the download URL
+        $url = $download_page.Links | Where-Object { $_.href -match '/officedeploymenttool_\d{5}-\d{5}\.exe$' } |
+        Select-Object -ExpandProperty href -First 1
 
-        if (-not $exeUrl) {
-            throw "Could not find direct .exe download URL in page content."
-        }
+        # Ensure the full URL
+        $url = if ($url -notmatch '^https?://') { "https://download.microsoft.com$url" } else { $url }
 
-        # Extract version from filename
-        $filename = [System.IO.Path]::GetFileNameWithoutExtension($exeUrl)
-        $versionPart = ($filename -split '_')[-1]
-        $cleanVersion = $versionPart -replace '-', '.'
+        # Extract and clean the version from the URL
+        $rawVersion = ($url -split '_|\.exe' | Select-Object -Last 1 -Skip 1)
+        $cleanVersion = $rawVersion -replace "-", "."
 
+        # Validate the version
         if (-not ($cleanVersion -match '^\d+(\.\d+)*$')) {
-            throw "Invalid version format extracted from: $filename"
+            throw "Invalid version format: $cleanVersion"
         }
 
-        return @{
-            URL           = $exeUrl
+        # Return the latest details
+        @{
+            URL           = $url
             Version       = $cleanVersion
             RemoteVersion = $cleanVersion
         }
@@ -59,7 +61,6 @@ function global:au_GetLatest {
         throw "Failed to fetch the latest release details. Error: $_"
     }
 }
-
 
 # Update command
 if ($MyInvocation.InvocationName -ne '.') {
