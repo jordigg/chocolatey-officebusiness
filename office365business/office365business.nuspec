@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>office365business</id>
-        <version>19029.20278</version>
+        <version>19328.20210</version>
         <title>Office 365 Business</title>
         <authors>Microsoft</authors>
         <owners>cadenreiman jordigg ThisGuy82</owners>
