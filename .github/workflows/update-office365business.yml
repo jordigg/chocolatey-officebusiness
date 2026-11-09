@@ -25,7 +25,7 @@ jobs:
       run:
         shell: powershell
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Install Chocolatey-AU
         run: choco install chocolatey-au -y --no-progress
@@ -44,7 +44,7 @@ jobs:
 
           if ($pkg.Updated) {
             if (-not (Get-ChildItem *.nupkg)) { choco pack; if ($LASTEXITCODE) { throw 'choco pack failed' } }
-            $version = (Get-ChildItem *.nupkg | Select-Object -First 1).BaseName -replace '^office365business\.', ''
+            $version = "$($pkg.RemoteVersion)"  # e.g. 20430.20146 (nupkg name adds a trailing .0)
             "updated=true"      | Out-File $env:GITHUB_OUTPUT -Append -Encoding utf8
             "version=$version"  | Out-File $env:GITHUB_OUTPUT -Append -Encoding utf8
           } else {
@@ -85,7 +85,7 @@ jobs:
 
       - name: Upload package artifact
         if: steps.au.outputs.updated == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: office365business-${{ steps.au.outputs.version }}
           path: office365business/*.nupkg
