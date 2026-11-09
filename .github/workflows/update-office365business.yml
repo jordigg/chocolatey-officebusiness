@@ -12,6 +12,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: update-office365business
@@ -61,15 +62,26 @@ jobs:
           choco push $nupkg.FullName --source https://push.chocolatey.org/ --api-key $env:CHOCO_API_KEY
           if ($LASTEXITCODE) { throw "choco push failed with exit code $LASTEXITCODE" }
 
-      - name: Commit version bump
+      # master is protected (PR required), so land the bump through a PR like the manual flow
+      - name: Open and merge version bump PR
         if: steps.au.outputs.updated == 'true' && (github.event_name == 'schedule' || inputs.push_package)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.au.outputs.version }}
         run: |
+          $branch = "v$env:VERSION"
           git config user.name  'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout -b $branch
           git add office365business/office365business.nuspec office365business/tools/chocolateyInstall.ps1
-          git commit -m "v${{ steps.au.outputs.version }}"
-          git push
+          git commit -m $branch
+          git push origin $branch --force
           if ($LASTEXITCODE) { throw 'git push failed' }
+
+          gh pr create --base master --head $branch --title $branch --body "Automated update of office365business to $env:VERSION (Office Deployment Tool)."
+          if ($LASTEXITCODE) { throw 'gh pr create failed' }
+          gh pr merge $branch --merge --delete-branch
+          if ($LASTEXITCODE) { throw 'gh pr merge failed' }
 
       - name: Upload package artifact
         if: steps.au.outputs.updated == 'true'
