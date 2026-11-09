@@ -1,4 +1,5 @@
-Import-Module au
+# Prefer the maintained Chocolatey-AU module, fall back to the legacy 'au' module
+if (Get-Module -ListAvailable -Name Chocolatey-AU) { Import-Module Chocolatey-AU } else { Import-Module au }
 
 # Function to calculate the checksum before updating
 if ($MyInvocation.InvocationName -ne '.') {

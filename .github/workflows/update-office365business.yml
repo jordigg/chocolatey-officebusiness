@@ -1,0 +1,79 @@
+name: Update office365business
+
+on:
+  schedule:
+    - cron: '17 6 * * *' # daily, 06:17 UTC
+  workflow_dispatch:
+    inputs:
+      push_package:
+        description: 'Push the package to the Chocolatey community repository if updated'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-office365business
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: powershell
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Chocolatey-AU
+        run: choco install chocolatey-au -y --no-progress
+
+      - name: Run update script
+        id: au
+        working-directory: office365business
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Remove-Item *.nupkg -ErrorAction SilentlyContinue
+
+          $pkg = & .\update.ps1 | Select-Object -Last 1
+          if (-not $pkg) { throw 'update.ps1 returned no result' }
+
+          Write-Host "Nuspec version: $($pkg.NuspecVersion)  Remote version: $($pkg.RemoteVersion)  Updated: $($pkg.Updated)"
+
+          if ($pkg.Updated) {
+            if (-not (Get-ChildItem *.nupkg)) { choco pack; if ($LASTEXITCODE) { throw 'choco pack failed' } }
+            $version = (Get-ChildItem *.nupkg | Select-Object -First 1).BaseName -replace '^office365business\.', ''
+            "updated=true"      | Out-File $env:GITHUB_OUTPUT -Append -Encoding utf8
+            "version=$version"  | Out-File $env:GITHUB_OUTPUT -Append -Encoding utf8
+          } else {
+            "updated=false" | Out-File $env:GITHUB_OUTPUT -Append -Encoding utf8
+          }
+
+      - name: Push package to Chocolatey
+        if: steps.au.outputs.updated == 'true' && (github.event_name == 'schedule' || inputs.push_package)
+        working-directory: office365business
+        env:
+          CHOCO_API_KEY: ${{ secrets.CHOCOLATEY_API_KEY }}
+        run: |
+          if (-not $env:CHOCO_API_KEY) { throw 'CHOCOLATEY_API_KEY secret is not set' }
+          $nupkg = Get-ChildItem *.nupkg | Select-Object -First 1
+          choco push $nupkg.FullName --source https://push.chocolatey.org/ --api-key $env:CHOCO_API_KEY
+          if ($LASTEXITCODE) { throw "choco push failed with exit code $LASTEXITCODE" }
+
+      - name: Commit version bump
+        if: steps.au.outputs.updated == 'true' && (github.event_name == 'schedule' || inputs.push_package)
+        run: |
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add office365business/office365business.nuspec office365business/tools/chocolateyInstall.ps1
+          git commit -m "v${{ steps.au.outputs.version }}"
+          git push
+          if ($LASTEXITCODE) { throw 'git push failed' }
+
+      - name: Upload package artifact
+        if: steps.au.outputs.updated == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: office365business-${{ steps.au.outputs.version }}
+          path: office365business/*.nupkg
