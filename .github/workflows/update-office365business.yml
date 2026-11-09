@@ -10,9 +10,7 @@ on:
         type: boolean
         default: true
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 concurrency:
   group: update-office365business
@@ -21,6 +19,11 @@ concurrency:
 jobs:
   update:
     runs-on: windows-latest
+    # CHOCOLATEY_API_KEY lives in this environment, which only master can use
+    environment: chocolatey
+    permissions:
+      contents: write
+      pull-requests: write
     defaults:
       run:
         shell: powershell
