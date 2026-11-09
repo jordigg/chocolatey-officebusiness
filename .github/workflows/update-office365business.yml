@@ -10,9 +10,7 @@ on:
         type: boolean
         default: true
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 concurrency:
   group: update-office365business
@@ -21,11 +19,18 @@ concurrency:
 jobs:
   update:
     runs-on: windows-latest
+    # CHOCOLATEY_API_KEY lives in this environment, which only master can use
+    environment: chocolatey
+    permissions:
+      contents: write
+      pull-requests: write
     defaults:
       run:
         shell: powershell
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false # git only gets a token in the step that pushes
 
       - name: Install Chocolatey-AU
         run: choco install chocolatey-au -y --no-progress
@@ -70,6 +75,7 @@ jobs:
           VERSION: ${{ steps.au.outputs.version }}
         run: |
           $branch = "v$env:VERSION"
+          gh auth setup-git  # use GH_TOKEN for this step's git push
           git config user.name  'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git checkout -b $branch
