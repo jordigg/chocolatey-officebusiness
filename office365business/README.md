@@ -1,5 +1,11 @@
 # Chocolatey Packages: Office365Business
 
+[![Chocolatey version](https://img.shields.io/chocolatey/v/office365business?label=chocolatey&logo=chocolatey)](https://community.chocolatey.org/packages/office365business)
+[![Chocolatey downloads](https://img.shields.io/chocolatey/dt/office365business?logo=chocolatey)](https://community.chocolatey.org/packages/office365business)
+[![Auto-update](https://github.com/jordigg/chocolatey-officebusiness/actions/workflows/update-office365business.yml/badge.svg)](https://github.com/jordigg/chocolatey-officebusiness/actions/workflows/update-office365business.yml)
+
+**Package page:** [community.chocolatey.org/packages/office365business](https://community.chocolatey.org/packages/office365business)
+
 ## Description
 
 Microsoft 365 (formerly Office 365) is a line of subscription services offered by Microsoft as part of the Microsoft Office product line. The brand encompasses plans that allow use of the Microsoft Office software suite over the life of the subscription, as well as cloud-based software as a service products for business environments, such as hosted Exchange Server, Skype for Business Server, and SharePoint, among others. All Microsoft 365 plans include automatic updates to their respective software at no additional charge, as opposed to conventional licenses for these programs—where new versions require purchase of a new license.
