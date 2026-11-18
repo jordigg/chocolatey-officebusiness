@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/jordigg/chocolatey-officebusiness/master/icons/Windows365.png" height="48" width="48" /> office365business](https://community.chocolatey.org/packages/office365business)
+# [<img src="https://cdn.jsdelivr.net/gh/jordigg/chocolatey-officebusiness@5434a8cc227584a97700ba72ff56b84ae3fc53bf/icons/Windows365.png" height="48" width="48" /> office365business](https://community.chocolatey.org/packages/office365business)
 
 Microsoft 365 Apps for business is the subscription edition of the Microsoft Office desktop apps (Word, Excel, PowerPoint, Outlook, OneNote and more), kept up to date automatically for as long as the subscription is active. This package installs it with the official [Office Deployment Tool](https://learn.microsoft.com/en-us/microsoft-365-apps/deploy/overview-office-deployment-tool), downloaded from Microsoft.
 
