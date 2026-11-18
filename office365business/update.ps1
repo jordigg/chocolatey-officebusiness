@@ -13,9 +13,17 @@ if ($MyInvocation.InvocationName -ne '.') {
     }
 }
 
-# The description is copied from README.md; Chocolatey rejects descriptions over 4000 characters
-# with a bare 409 Conflict on push, so fail here with a clear message instead
-function global:au_AfterUpdate {
+# The package description is README.md from its "## Description" heading on, so the title,
+# badges and links above it stay on GitHub only (update runs with -NoReadme to skip AU's
+# default, which copies everything after line 2).
+# Chocolatey rejects descriptions over 4000 characters with a bare 409 Conflict on push,
+# so fail here with a clear message instead. au_AfterUpdate runs before choco pack.
+function global:au_AfterUpdate($Package) {
+    $readme = Join-Path $PSScriptRoot 'README.md'
+    $start = (Select-String -Path $readme -Pattern '^## Description\s*$' | Select-Object -First 1).LineNumber
+    if (-not $start) { throw "README.md has no '## Description' heading to start the package description from" }
+    Set-DescriptionFromReadme -Package $Package -ReadmePath $readme -SkipFirst ($start - 1)
+
     $nuspec = Get-Content "$PSScriptRoot\office365business.nuspec" -Raw
     $description = [regex]::Match($nuspec, '(?s)<description><!\[CDATA\[(.*?)\]\]></description>').Groups[1].Value
     if ($description.Length -gt 4000) {
@@ -76,7 +84,7 @@ function global:au_GetLatest {
 # Update command
 if ($MyInvocation.InvocationName -ne '.') {
     try {
-        update -ChecksumFor none
+        update -ChecksumFor none -NoReadme
     }
     catch {
         throw "Update process failed. Error: $_"
