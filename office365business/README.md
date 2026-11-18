@@ -1,67 +1,29 @@
-# Chocolatey Packages: Office365Business
+# [<img src="https://raw.githubusercontent.com/jordigg/chocolatey-officebusiness/master/icons/Windows365.png" height="48" width="48" /> office365business](https://community.chocolatey.org/packages/office365business)
 
-[![Chocolatey version](https://img.shields.io/chocolatey/v/office365business?label=chocolatey&logo=chocolatey)](https://community.chocolatey.org/packages/office365business)
-[![Chocolatey downloads](https://img.shields.io/chocolatey/dt/office365business?logo=chocolatey)](https://community.chocolatey.org/packages/office365business)
-[![Auto-update](https://github.com/jordigg/chocolatey-officebusiness/actions/workflows/update-office365business.yml/badge.svg)](https://github.com/jordigg/chocolatey-officebusiness/actions/workflows/update-office365business.yml)
+Microsoft 365 Apps for business is the subscription edition of the Microsoft Office desktop apps (Word, Excel, PowerPoint, Outlook, OneNote and more), kept up to date automatically for as long as the subscription is active. This package installs it with the official [Office Deployment Tool](https://learn.microsoft.com/en-us/microsoft-365-apps/deploy/overview-office-deployment-tool), downloaded from Microsoft.
 
-**Package page:** [community.chocolatey.org/packages/office365business](https://community.chocolatey.org/packages/office365business)
+## Features
 
-## Description
-
-Microsoft 365 (formerly Office 365) is a line of subscription services offered by Microsoft as part of the Microsoft Office product line. The brand encompasses plans that allow use of the Microsoft Office software suite over the life of the subscription, as well as cloud-based software as a service products for business environments, such as hosted Exchange Server, Skype for Business Server, and SharePoint, among others. All Microsoft 365 plans include automatic updates to their respective software at no additional charge, as opposed to conventional licenses for these programs—where new versions require purchase of a new license.
-
-This package installs the [Microsoft 365 Business Retail](https://www.microsoft.com/en-us/microsoft-365/business/microsoft-365-apps-for-business) edition with the language and architecture (32/64 bits) matching the device if not specified otherwise on the parameters.
-
-## Note
-
-- This installer *will uninstall any other Office packages installed* prior to installing this one to avoid possible errors during installation.
-- If you want to force the 32bit version on a 64bit Windows, use the choco `--forcex86` parameter when installing the package.
-
-## Package installation defaults
-
-By default, **installation** of this package:
-
-- Will uninstall other Microsoft 365 packages present on the device.
-- Will install with the matching the language of the operating system.
-- Will install the [Microsoft 365 Business Retail](https://www.microsoft.com/en-us/microsoft-365/business/microsoft-365-apps-for-business) product with all the default apps if not specified otherwise as a parameter.
-- Will set the [release channel](https://docs.microsoft.com/en-gb/deployoffice/overview-update-channels) to `Current`.
-- Will enable auto-updates.
+- Installs [Microsoft 365 Apps for business](https://www.microsoft.com/en-us/microsoft-365/business/microsoft-365-apps-for-business) (`O365BusinessRetail`) with all of its default apps.
+- Matches the language of the operating system and the architecture of the device (64-bit on 64-bit Windows).
+- Uses the `Current` [update channel](https://learn.microsoft.com/en-us/microsoft-365-apps/updates/overview-update-channels) with automatic updates enabled.
+- Can install another product, a subset of apps or another language, or use your own configuration file, through package parameters.
 
 ## Package Parameters
 
-- `/configpath` - Allows you to specify a [custom XML configuration](https://docs.microsoft.com/en-gb/deployoffice/office-deployment-tool-configuration-options) for the installer which is present on the system.
-- `/productid` - Allows you to change the default product id to install from `O365BusinessRetail` to [something else](https://docs.microsoft.com/en-us/office365/troubleshoot/installation/product-ids-supported-office-deployment-click-to-run#more-information).
-- `/exclude` - Allows you to exclude some applications from the default product id you install.
-- `/language` - Allows you to specify a [language](https://docs.microsoft.com/en-gb/deployoffice/overview-deploying-languages-microsoft-365-apps#languages-culture-codes-and-companion-proofing-languages) different to the default one present on the device.
-- `/updates` - Enables auto-updates.
-- `/eula` - Automatically accepts EULA.
+- `/configpath` - Path to a [custom XML configuration](https://learn.microsoft.com/en-us/microsoft-365-apps/deploy/office-deployment-tool-configuration-options) on the system to use instead of the default one.
+- `/productid` - [Product ID](https://learn.microsoft.com/en-us/troubleshoot/microsoft-365-apps/office-suite-issues/product-ids-supported-office-deployment-click-to-run) to install instead of `O365BusinessRetail`.
+- `/exclude` - Apps to leave out of the product, separated by spaces (for example `Access Publisher`).
+- `/language` - [Language](https://learn.microsoft.com/en-us/microsoft-365-apps/deploy/overview-deploying-languages-microsoft-365-apps#languages-culture-codes-and-companion-proofing-languages) to install instead of the operating system's (for example `fr-FR`).
+- `/updates` - `TRUE` (default) or `FALSE` to enable or disable automatic updates.
+- `/eula` - `TRUE` (default) or `FALSE` to accept the EULA automatically.
 
-## Installation
+Example: Microsoft 365 Home Premium in 32-bit, with only Excel, PowerPoint and Word, in French, with updates disabled and the EULA not accepted automatically:
 
-Installation without parameters with default values.
+`choco install office365business --forcex86 --params "'/productid:O365HomePremRetail /exclude:Access Groove Lync OneDrive OneNote Outlook Publisher /language:fr-FR /updates:FALSE /eula:FALSE'"`
 
-```ps1
-choco install office365business
-```
+## Notes
 
-Installation with parameters. Will select Microsoft 365 Home Premium retail edition in 32bits, only install Excel, Powerpoint and Word in French with updates disabled and EULA not accepted automatically.
-
-```powershell
- choco install office365business --forcex86 --params "'/productid:O365HomePremRetail /exclude:Access Groove Lync OneDrive OneNote Outlook Publisher /language:fr-FR /updates:FALSE /eula:FALSE'"
-```
-
-## Disclaimer
-
-These Chocolatey Packages only contain installation routines. The software itself is downloaded from the official sources of the software developer. The maintainers of this package have no affiliation with the software developer.
-
-## Author
-
-- [Jordi Garcia](https://jordigarcia.net)
-
-## License
-
-This project is under the Apache License 2.0 License. See the [LICENSE](LICENSE) file for the full license text.
-
-## Copyright
-
-(c) 2020, Jordi Garcia
+- **Installing this package removes any MSI-installed Office products** (including Visio, Project and language packs) before installing, to avoid conflicts. This doesn't apply when you pass your own file with `/configpath`.
+- To install the 32-bit version on 64-bit Windows, add `--forcex86`.
+- Using the apps requires a Microsoft 365 subscription that includes them.

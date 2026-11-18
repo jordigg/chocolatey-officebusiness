@@ -13,6 +13,18 @@ if ($MyInvocation.InvocationName -ne '.') {
     }
 }
 
+# AU copies README.md (minus its first 2 lines: title and blank line) into the nuspec description.
+# Chocolatey rejects descriptions over 4000 characters with a bare 409 Conflict on push,
+# so fail here with a clear message instead. au_AfterUpdate runs after the README copy
+# and before choco pack.
+function global:au_AfterUpdate {
+    $nuspec = Get-Content "$PSScriptRoot\office365business.nuspec" -Raw
+    $description = [regex]::Match($nuspec, '(?s)<description><!\[CDATA\[(.*?)\]\]></description>').Groups[1].Value
+    if ($description.Length -gt 4000) {
+        throw "Package description is $($description.Length) characters (limit 4000). Shorten office365business/README.md."
+    }
+}
+
 # Function to search and replace values in the Chocolatey install script
 function global:au_SearchReplace {
     @{

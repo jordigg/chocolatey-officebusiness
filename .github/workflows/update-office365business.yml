@@ -35,6 +35,11 @@ jobs:
       - name: Install Chocolatey-AU
         run: choco install chocolatey-au -y --no-progress
 
+      # Runs the community repository's rules during choco pack, so problems fail here
+      # with a clear message instead of a bare 409 Conflict on push
+      - name: Install Chocolatey community validation
+        run: choco install chocolatey-community-validation.extension -y --no-progress
+
       - name: Run update script
         id: au
         working-directory: office365business
