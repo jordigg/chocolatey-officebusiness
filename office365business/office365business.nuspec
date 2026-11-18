@@ -71,7 +71,7 @@ This project is under the Apache License 2.0 License. See the [LICENSE](LICENSE)
 ]]></description>
         <summary>Office 365 Business</summary>
         <packageSourceUrl>https://github.com/jordigg/chocolatey-officebusiness/tree/master/office365business</packageSourceUrl>
-		<iconUrl>https://raw.githubusercontent.com/jordigg/chocolatey-officebusiness/master/icons/Windows365.png</iconUrl>
+		<iconUrl>https://cdn.jsdelivr.net/gh/jordigg/chocolatey-officebusiness@5434a8cc227584a97700ba72ff56b84ae3fc53bf/icons/Windows365.png</iconUrl>
 		<releaseNotes>enable optional installation parameters</releaseNotes>
         <tags>Microsoft Office365Business Office 365 Bussines Microsoft365 admin</tags>
     </metadata>
