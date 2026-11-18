@@ -64,7 +64,7 @@ jobs:
         run: |
           if (-not $env:CHOCO_API_KEY) { throw 'CHOCOLATEY_API_KEY secret is not set' }
           $nupkg = Get-ChildItem *.nupkg | Select-Object -First 1
-          choco push $nupkg.FullName --source https://push.chocolatey.org/ --api-key $env:CHOCO_API_KEY
+          choco push $nupkg.FullName --source https://push.chocolatey.org/ --api-key $env:CHOCO_API_KEY --verbose
           if ($LASTEXITCODE) { throw "choco push failed with exit code $LASTEXITCODE" }
 
       # master is protected (PR required), so land the bump through a PR like the manual flow
